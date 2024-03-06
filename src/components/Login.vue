@@ -7,8 +7,8 @@
           v-model="password"
           show-password
         ></el-input>
-        <el-button @click="login1">另类登录</el-button>
-        <el-button @click="login">登录</el-button>
+        <el-button @click="login1">路径参数登录</el-button>
+        <el-button @click="login">查询参数登录</el-button>
       </div></el-tab-pane
     >
     <el-tab-pane label="注册" name="register">
@@ -26,14 +26,12 @@
 <script>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-// import { TabsPaneContext } from 'element-plus'
 
 export default {
   name: 'LoginComp',
   setup() {
     const router = useRouter()
     function login() {
-      // router.push("/home")
       router.push({ name: 'home', query: { id: userID.value, password: password.value } })
     }
 
@@ -44,6 +42,7 @@ export default {
     function register() {
       console.log('注册账号')
     }
+
 
 
     const userID = ref('')

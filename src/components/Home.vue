@@ -4,6 +4,7 @@
   <el-button @click="toLogin">跳转到登录页</el-button>
   <hr></hr>
   <div>传递数据：</div>
+  <div>id:{{ id }}</div>
   <div>route.params.id {{ $route.params.id }}</div>
   <div>route.query.id: {{ $route.query.id }}</div>
   <div>route.query.password: {{ $route.query.password }}</div>
@@ -12,6 +13,7 @@
 import { useRouter } from 'vue-router'
   export default {
     name: 'MainComp',
+    props: ["id"],
     setup () {
       const router = useRouter()
       function logout() {
