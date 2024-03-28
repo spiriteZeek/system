@@ -2,7 +2,6 @@
   <div>登陆成功</div>
   <el-button @click="logout">退出登录</el-button>
   <el-button @click="toLogin">跳转到登录页</el-button>
-  <hr></hr>
   <div>传递数据：</div>
   <div>id:{{ id }}</div>
   <div>route.params.id {{ $route.params.id }}</div>
