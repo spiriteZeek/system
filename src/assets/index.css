@@ -4,6 +4,14 @@ html, body, #app {
   font-size: 12px;
 }
 
+:root {
+  --el-color-primary: hsl(155,100%,36%);
+  --el-color-primary-light-3: hsl(155,100%,45%);
+  --el-color-primary-light-5: hsl(155,100%,56%);
+  --el-color-primary-light-7: hsl(155,100%,70%);
+  --el-color-primary-light-8: hsl(155,100%,80%);
+  --el-color-primary-light-9: hsl(155,100%,90%);
+}
 body {
   margin: 0;
 }

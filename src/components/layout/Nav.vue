@@ -18,7 +18,7 @@ export default {
     const menuItemPath = [
       { path: '/home/upload', text: '上传文件' },
       { path: '/home/myfiles', text: '我的文件' },
-      { path: 'home/share', text: '共享文件'}
+      { path: '/home/share', text: '共享文件'}
     ]
     const defaultMenu = ref(menuItemPath[0].path)
     const menuItemPathRef = ref(menuItemPath)
