@@ -10,7 +10,15 @@ const mockHttp = axios.create({
   timeout: 1000
 })
 
+const selfServer = axios.create({
+  baseURL: 'http://localhost:8080',
+  headers: {
+    'zgy': 'hahaha'
+  }
+})
+
 export {
   gaodeHttp,
-  mockHttp
+  mockHttp,
+  selfServer
 }
