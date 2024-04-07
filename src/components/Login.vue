@@ -26,12 +26,20 @@
 <script>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { mockHttp } from '@/http/axios.js'
 
 export default {
   name: 'LoginComp',
   setup() {
     const router = useRouter()
-    function login() {
+    async function login() {
+      const { data: res } = await mockHttp.post('/login', null, {
+        params: {
+          username: userID.value || '',
+          password: password.value
+        }
+      })
+      console.log(res)
       router.push({ name: 'home', query: { id: userID.value, password: password.value } })
     }
 
@@ -39,11 +47,17 @@ export default {
       router.push({ name: 'home+id', params: { id: userID.value } })
     }
 
-    function register() {
+    async function register() {
+      const {data: res} = await mockHttp.post('/registry', null, {
+        params: {
+          username: userID.value,
+          password: password.value,
+        }
+      })
+      console.log("res:", res)
+      router.push({ name: 'home', query: { id: userID.value, password: password.value}})
       console.log('注册账号')
     }
-
-
 
     const userID = ref('')
     const password = ref('')
