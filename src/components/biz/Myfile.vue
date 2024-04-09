@@ -47,7 +47,6 @@ export default {
     // base64编码
     function base64Upload() {
       const fileBase64 = imgUrl.value.split(',')[1]
-      const zgyBase64 = imgUrl.value
       console.log(imgUrl.value.split(',')[1])
       selfServer.post('/upload', {file: fileBase64})
     }
