@@ -3,6 +3,7 @@ import MainComp from '@/components/Main.vue'
 import LoginComp from '@/components/Login.vue'
 // import HomeComp from '@/components/Home.vue'
 import ZeekHubComp from '@/components/ZeekHub.vue'
+import WeatherComp from './components/biz/Weather.vue'
 import UploadComp from '@/components/biz/Upload.vue'
 import MyfileComp from '@/components/biz/Myfile.vue'
 const routes = [
@@ -13,8 +14,9 @@ const routes = [
     name: 'home',
     component: ZeekHubComp,
     children: [
+      { path: 'weather', component: WeatherComp },
+      { path: 'myfile', component: MyfileComp },
       { path: 'upload', component: UploadComp },
-      { path: 'myfiles', component: MyfileComp }
   ]
   },
   // { path: '/home', name: 'home', component: HomeComp, props: (route) => ({ id: route.query.id}) },
@@ -26,6 +28,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes //routes: routes 的缩写
+})
+
+router.beforeEach((to) => {
+  console.log(to.path)
+  const validResult = localStorage.getItem('token')
+  if (to.path === "/home" && !validResult) {
+    return {
+      path: '/login'
+    }
+  }
 })
 
 export default router

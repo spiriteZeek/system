@@ -7,8 +7,8 @@
           v-model="password"
           show-password
         ></el-input>
-        <el-button @click="login1">路径参数登录</el-button>
-        <el-button @click="login">查询参数登录</el-button>
+        <!-- <el-button @click="login1">路径参数登录</el-button> -->
+        <el-button @click="login">登录</el-button>
       </div></el-tab-pane
     >
     <el-tab-pane label="注册" name="register">
@@ -33,29 +33,34 @@ export default {
   setup() {
     const router = useRouter()
     async function login() {
-      const { data: res } = await mockHttp.post('/login', null, {
-        params: {
-          username: userID.value || '',
-          password: password.value
+      const { data: res } = await mockHttp.post('/login', {
+        username: userID.value || '',
+        password: password.value
+      })
+      // 用户token保存
+      localStorage.setItem('token',res.data.token)
+      console.log(localStorage.getItem('token'))
+      router.push({
+        path: '/home',
+        query: {
+          userID: userID.value || ''
         }
       })
-      console.log(res)
-      router.push({ name: 'home', query: { id: userID.value, password: password.value } })
     }
 
-    function login1() {
-      router.push({ name: 'home+id', params: { id: userID.value } })
-    }
+    // function login1() {
+    //   router.push({ name: 'home+id', params: { id: userID.value } })
+    // }
 
     async function register() {
-      const {data: res} = await mockHttp.post('/registry', null, {
+      const { data: res } = await mockHttp.post('/registry',{
         params: {
           username: userID.value,
           password: password.value,
         }
       })
-      console.log("res:", res)
-      router.push({ name: 'home', query: { id: userID.value, password: password.value}})
+      console.log('res:', res)
+      router.push({ name: 'home', query: { id: userID.value, password: password.value } })
       console.log('注册账号')
     }
 
@@ -67,7 +72,7 @@ export default {
       login,
       userID,
       password,
-      login1,
+      // login1,
       register,
       activeName
     }

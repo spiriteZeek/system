@@ -10,15 +10,23 @@ const mockHttp = axios.create({
   timeout: 1000
 })
 
+mockHttp.interceptors.request.use(
+  (config) => {
+    const localToken = localStorage.getItem('token')
+    if (config.url !== '/login' && localToken) {
+      config.headers['token'] = localToken
+    }
+  return config
+  }
+) 
+
 const selfServer = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {
-    'zgy': 'hahaha'
+    zgy: 'hahaha'
   }
 })
 
-export {
-  gaodeHttp,
-  mockHttp,
-  selfServer
-}
+
+
+export { gaodeHttp, mockHttp, selfServer }

@@ -1,63 +1,81 @@
 <template>
-  <el-input v-model="cityCode" placeholder="请输入城市代码"/>
-  <el-button @click="getWeather">点击查询天气</el-button>
-  <el-button @click="getWeatherPromise">点击查询天气(promise)</el-button>
-  <el-button @click="getWeatherFetch">点击查询天气(fetch)</el-button>
-  <el-button @click="getWeatherAxios">点击查询天气(axios)</el-button>
+  <el-button @click="upload">选择文件</el-button>
+  <input @change="handleChange" ref="file" id="fileInput" type="file" />
+  <el-tag id="filename" type="primary" v-show="filename">{{ filename }}</el-tag>
+  <div>
+    <el-button @click="testServer">上传文件</el-button>
+    <el-button @click="base64Upload">base64上传</el-button>
+  </div>
+  <img v-show="filename" :src="imgUrl" />
 </template>
 
 <script>
-import { ref } from 'vue'
-import { requestQuery, requestQueryPromise } from '@/http/xhr.js'
-import { gaodeHttp } from '@/http/axios.js'
+import { onMounted, onUnmounted, ref } from 'vue'
+import { selfServer } from '@/http/axios.js'
 export default {
   name: 'UploadComp',
   setup() {
-    const cityCode = ref('321100')
-    function getWeather() {
-      requestQuery('GET', {
-        key: 'bb3993e9a284103bfac4003279ed4914',
-        city: cityCode.value,
-        extensions: 'base',
-      }, console.log)
+    const file = ref(null)
+    const filename = ref('')
+    const formData = new FormData()
+    const imgUrl = ref('')
+    const base64Reader = new FileReader()
+    function getReaderResult() {
+      imgUrl.value = base64Reader.result
     }
-    async function getWeatherPromise() {
-      const result = await requestQueryPromise('GET', {
-        key: 'bb3993e9a284103bfac4003279ed4914',
-        city: cityCode.value,
-        extensions: 'base'
-      })
-      console.log(result)
-    }
+    onMounted(() => {
+      base64Reader.addEventListener('load', getReaderResult)
+    })
 
-    async function getWeatherFetch() {
-      const result = await fetch(`https://restapi.amap.com/v3/weather/weatherInfo?city=${cityCode.value}&key=bb3993e9a284103bfac4003279ed4914&extensions=base`)
-      // data也是异步的
-      const data =await result.json()
-      console.log(result)
-      console.log(data)
-    }
+    onUnmounted(() => {
+      base64Reader.addEventListener('load', getReaderResult)
+    })
 
-    async function getWeatherAxios() {
-      const {data: res} = await gaodeHttp.get('/weather/weatherInfo', {
-        params: {
-          city: cityCode.value,
-          key: 'bb3993e9a284103bfac4003279ed4914',
-          extensions: 'base'
-        }
-      })
-
-      console.log(res)
-      
+    function handleChange(e) {
+      console.log(e.target.files)
+      console.log(file.value.files)
+      filename.value = file.value.files[0].name
+      formData.append('file', file.value.files[0])
+      base64Reader.readAsDataURL(file.value.files[0])
     }
 
+    // formdat表单上传文件
+    function testServer() {
+      selfServer.put('/upload', formData)
+    }
+
+    // base64编码
+    function base64Upload() {
+      const fileBase64 = imgUrl.value.split(',')[1]
+      console.log(imgUrl.value.split(',')[1])
+      selfServer.post('/upload', {file: fileBase64})
+    }
+
+    function upload() {
+      file.value.click()
+    }
     return {
-      cityCode,
-      getWeather,
-      getWeatherPromise,
-      getWeatherFetch,
-      getWeatherAxios
+      file,
+      upload,
+      handleChange,
+      filename,
+      testServer,
+      imgUrl,
+      base64Upload
     }
   }
 }
 </script>
+
+<style scoped>
+#fileInput {
+  width: 0px;
+  height: 0px;
+}
+#filename {
+  margin-top: 10px;
+}
+img {
+  width: 300px;
+}
+</style>

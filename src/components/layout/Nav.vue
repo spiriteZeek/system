@@ -17,8 +17,8 @@ export default {
     const route = useRoute()
     const menuItemPath = [
       { path: '/home/upload', text: '上传文件' },
-      { path: '/home/myfiles', text: '我的文件' },
-      { path: '/home/share', text: '共享文件'}
+      { path: '/home/myfile', text: '我的文件' },
+      { path: '/home/weather', text: '查询天气api'}
     ]
     const defaultMenu = ref(menuItemPath[0].path)
     const menuItemPathRef = ref(menuItemPath)
@@ -28,7 +28,6 @@ export default {
       () => {
         menuItemPath.forEach((item) => {
           if (item.path == route.path) {
-            console.log('route.path:', route.path)
             defaultMenu.value = route.path
           }
         })
