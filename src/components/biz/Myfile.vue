@@ -29,10 +29,12 @@
       </template>
     </el-table-column>
   </el-table>
+  <el-pagination @next-click="nextClick" @prev-click="prevClick" @current-change="pageChange" v-model:current-page="currentPage" small background layout="prev, pager, next" :total="total" class="mt-4" />
 </template>
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { mockHttp } from '@/http/axios.js'
 export default {
   name: 'MyfileComp',
   setup() {
@@ -67,6 +69,27 @@ export default {
       }
     ])
 
+    const currentPage = ref(1)
+    const total = ref(0)
+    const SIZE = 20;
+
+    async function getTableData(size, curPage) {
+      const { data: res } = await mockHttp.get('/img/list', {
+        params: {
+          pageSize: size,
+          pagNum: curPage
+        }
+      })
+      console.log(res.data)
+      tableData.value = res.data.items
+      total.value = res.data.totalSize
+    }
+
+    onMounted(async () => {
+      // 分页查询的两个参数
+      getTableData(SIZE, currentPage.value)
+    })
+
     function copyShareLink(lineInfo) {
       console.log('开始复制链接到粘贴板')
       console.log(lineInfo)
@@ -80,12 +103,25 @@ export default {
       })
     }
 
-    function download(lineInfo) {
-      console.log('开始下载文件')
-      
+    function pageChange(curPage) {
+      console.log(curPage)
+      getTableData(SIZE, curPage)
     }
 
-    return { tableData, copyShareLink, download }
+    function prevClick(curPage) {
+      console.log("向前挪一格")
+    }
+
+    function nextClick(curPage) {
+      console.log("向后挪一格")
+    }
+
+
+    function download(lineInfo) {
+      console.log('开始下载文件')
+    }
+
+    return { tableData, copyShareLink, download, total, currentPage, pageChange, nextClick, prevClick }
   }
 }
 </script>
