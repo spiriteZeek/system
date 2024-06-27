@@ -19,7 +19,7 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column prop="latestUpdateTime" label="最近修改时间" width="150"></el-table-column>
+    <el-table-column prop="fileUpdateTime" label="最近修改时间" width="150"></el-table-column>
     <el-table-column label="操作" width="200">
       <template #default="scope">
         <el-button type="primary" size="small" @click="download(scope)">下载</el-button>
@@ -38,36 +38,7 @@ import { mockHttp } from '@/http/axios.js'
 export default {
   name: 'MyfileComp',
   setup() {
-    const tableData = ref([
-      {
-        uid: '1',
-        filename: 'qq截图',
-        fileSize: '20k',
-        fileUrl: 'http://127.0.0.1:8080/test.txt',
-        latestUpdateTime: '2024/4/9'
-      },
-      {
-        uid: '2',
-        filename: '微信截图',
-        fileSize: '20k',
-        fileUrl: 'https://www.zhihu.com',
-        latestUpdateTime: '2024/4/9'
-      },
-      {
-        uid: '3',
-        filename: 'snipate截图',
-        fileSize: '20k',
-        fileUrl: 'https://www.yuque.com',
-        latestUpdateTime: '2024/4/9'
-      },
-      {
-        uid: '4',
-        filename: 'tim截图',
-        fileSize: '20k',
-        fileUrl: 'https://www.heishenhua.com',
-        latestUpdateTime: '2024/4/9'
-      }
-    ])
+    const tableData = ref()
 
     const currentPage = ref(1)
     const total = ref(0)

@@ -12,6 +12,7 @@
 <script>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { selfServer } from '@/http/axios.js'
+import { ElMessage } from 'element-plus'
 export default {
   name: 'UploadComp',
   setup() {
@@ -32,16 +33,21 @@ export default {
     })
 
     function handleChange(e) {
+      const selectedFile = file.value.files[0]
       console.log(e.target.files)
       console.log(file.value.files)
-      filename.value = file.value.files[0].name
-      formData.append('file', file.value.files[0])
-      base64Reader.readAsDataURL(file.value.files[0])
+      filename.value = selectedFile.name
+      formData.append('file', selectedFile)
+      base64Reader.readAsDataURL(selectedFile)
     }
 
-    // formdat表单上传文件
-    function testServer() {
-      selfServer.put('/upload', formData)
+    // formdata表单上传文件
+    async function testServer() {
+      await selfServer.post('/upload', formData)
+      ElMessage({
+        message: '成功上传文件',
+        type: 'success'
+      })
     }
 
     // base64编码

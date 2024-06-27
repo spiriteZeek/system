@@ -6,7 +6,7 @@ const gaodeHttp = axios.create({
 })
 
 const mockHttp = axios.create({
-  baseURL: 'http://127.0.0.1:4523/m1/4261823-0-default',
+  baseURL: 'http://127.0.0.1:3000/',
   timeout: 1000
 })
 
@@ -21,9 +21,9 @@ mockHttp.interceptors.request.use(
 ) 
 
 const selfServer = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://127.0.0.1:3000/',
   headers: {
-    zgy: 'hahaha'
+    'Content-Type': 'multipart/form-data'
   }
 })
 
